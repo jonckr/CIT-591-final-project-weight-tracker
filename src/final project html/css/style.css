@@ -1,0 +1,16 @@
+submit{
+    color: #555555;
+    border-radius : 30px;
+}
+h1{
+    text-align : center;
+    font-style: italic;
+    word-spacing: 0.2em;
+    border : 100px blueviolet;
+    border-radius: 35px;
+    margin: 50px;
+}
+input1{
+    text-align : center;
+    font-style: italic;
+}
