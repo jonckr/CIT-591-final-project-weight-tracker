@@ -1,21 +1,24 @@
 import javax.swing.JOptionPane;
+import java.lang.Math;
 
 public class ProfileCalculator {
 	private double inactiveBMR; //BMR stands for Basal Metabolic Rate
 	private double dailyEnergyExpenditure;
+	private double poundsLose;
+	private double totalPoundDeficit;
+	private int weeksLeft;
 
-	
 	/**
 	 * Calculate user's BMI using Metrics measures
 	 * @param currentWeight
 	 * @param currentHeight
 	 * @return
 	 */
-	public double calculateBMI(double currentWeight, double currentHeight) {
+	private static double calculateBMI(double currentWeight, double currentHeight) {
 		double BMI = (currentWeight * 700) / (currentHeight * currentHeight);
 		return BMI;
 	}
-	
+
 	/**
 	 * Calculate user's inactiveBMR using Metrics measures
 	 * @param gender
@@ -24,7 +27,7 @@ public class ProfileCalculator {
 	 * @param age
 	 * @return
 	 */
-	public double calculateInactiveBMR(String gender, double currentWeight, double currentHeight, int age) {
+	private double calculateInactiveBMR(String gender, double currentWeight, double currentHeight, int age) {
 		if ( gender.toLowerCase().equals("male") || gender.toLowerCase().equals("m") ) {
 			inactiveBMR = 66 + (6.23 * currentWeight) + (12.7 * currentHeight) - (6.8 * age);
 		}
@@ -37,7 +40,7 @@ public class ProfileCalculator {
 		return inactiveBMR;
 
 	}
-	
+
 	//Add in method to calculate Activity level
 	/*
 	public float calcTDEE(String activityLevel) {
@@ -51,12 +54,13 @@ public class ProfileCalculator {
 }
 */
 	/**
-	 * Calculates the minimum number of calories to maintain current weight
+	 * Calculates the minimum number of calories to maintain current weight - Based off BMR and Activity Level
+	 * (In other words, this is the users Daily Calorie Needs)
 	 * @param activityLevel
 	 * @return
 	 */
 	public double calculateDailyEnergyExpenditure(int activityLevel) {
-		
+
 		if (activityLevel == 1) { //Sendary BMR (little or no exercise, desk job)
 			dailyEnergyExpenditure = inactiveBMR * 1.2;
 		}else if (activityLevel == 2) { //Lightly active BMR (light exercise/sports 1-3 days/wk)
@@ -70,9 +74,18 @@ public class ProfileCalculator {
 		}
 		return dailyEnergyExpenditure;
 	}
-	
+
 	//Figure out how to relate Daily Energy Expenditure to how much user intakes a day and what is his caloric deficit
+	public double calculateCalorieDeficit(double currentWeight, double targetWeight, double dailyEnergyExpenditure) {
+		poundsLose = currentWeight - targetWeight;
+		totalPoundDeficit = poundsLose * 3500;
+		return totalPoundDeficit;
+	}
 	//Add in method to calculate how many more weeks left
-	
-	
+	public int weeksToFinish(double totalPoundDeficit, int activityLevel) {
+		weeksLeft = (int) Math.ceil( ( totalPoundDeficit / (7 * activityLevel) ) ); // Rounds up whatever double value of weeks
+		return weeksLeft;
+	}
+
+
 }
